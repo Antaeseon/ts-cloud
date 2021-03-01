@@ -28,7 +28,6 @@ public class JdbcOrderRepository implements OrderRepository {
                 .withTableName("Taco_Order_Tacos");
 
         this.objectMapper = new ObjectMapper();
-
     }
 
     @Override
@@ -36,14 +35,13 @@ public class JdbcOrderRepository implements OrderRepository {
         order.setPlacedAt(new Date());
         long orderId = saveOrderDetails(order);
         order.setId(orderId);
-        List<Taco> tacos =  order.getTacos();
+        List<Taco> tacos = order.getTacos();
 
         for (Taco taco : tacos) {
             saveTacoToOrder(taco, orderId);
         }
 
         return order;
-
     }
 
     private long saveOrderDetails(Order order) {
@@ -52,10 +50,11 @@ public class JdbcOrderRepository implements OrderRepository {
                 objectMapper.convertValue(order, Map.class);
         values.put("placedAt", order.getPlacedAt());
 
-        long orderId = orderInserter.executeAndReturnKey(values)
-                .longValue();
+        long orderId =
+                orderInserter
+                        .executeAndReturnKey(values)
+                        .longValue();
         return orderId;
-
     }
 
     private void saveTacoToOrder(Taco taco, long orderId) {

@@ -22,24 +22,25 @@ public class OrderController {
 
     private OrderRepository orderRepo;
 
-    public OrderController(OrderRepository orderRepo){
-        this.orderRepo=orderRepo;
+    public OrderController(OrderRepository orderRepo) {
+        this.orderRepo = orderRepo;
     }
 
     @GetMapping("/current")
-    public String orderForm(){
-//        model.addAttribute("order",new Order());
+    public String orderForm() {
         return "orderForm";
     }
 
     @PostMapping
-    public String processOrder(@Valid Order order, Errors errors, SessionStatus sessionStatus){
-        if(errors.hasErrors()){
+    public String processOrder(@Valid Order order,
+                               Errors errors, SessionStatus sessionStatus) {
+        if (errors.hasErrors()) {
             return "orderForm";
         }
-//        log.info("Order submitted: "+order);
+
         orderRepo.save(order);
         sessionStatus.setComplete();
+
         return "redirect:/";
     }
 
